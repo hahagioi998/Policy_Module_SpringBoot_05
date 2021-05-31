@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title> View Policy </title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle Navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}"> Policy Module - Policy Home </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/}"> Home </a></li>
+                <li><a th:href="@{/risk}"> Risk Home </a></li>
+                <li><a th:href="@{/policy}"> Policy Home </a></li>
+                <li><a th:href="@{/activity}"> Activity Logs </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"> <b> Logout </b> </a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-2">
+    <br><br><br>
+    <h3> Policy Details </h3>
+    <table border="1" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th class="col-xs-2 text-center"> Policy Name </th>
+            <th class="col-xs-2 text-center"> Remedy Type </th>
+            <th class="col-xs-2 text-center"> Remedy Time </th>
+            <th class="col-xs-1 text-center"> Notify User </th>
+            <th class="col-xs-1 text-center"> Notify Admin </th>
+            <th class="col-xs-2 text-center"> Admin Email </th>
+            <th class="col-xs-2 text-center"> Admin Email Subject </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td th:text="${policy.policyName}"></td>
+            <td th:text="${policy.remedyType}"></td>
+            <td th:text="${policy.remedyTime}"></td>
+            <td th:text="${policy.notifyUser}"></td>
+            <td th:text="${policy.notifyAdmin}"></td>
+            <td th:text="${policy.adminEmail}"></td>
+            <td th:text="${policy.adminEmailSubject}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <hr>
+    <h4> Risks Included In This Policy : </h4>
+    <table border="1" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th class="col-xs-2 text-center"> Risk Title </th>
+            <th class="col-xs-3 text-center"> Description </th>
+            <th class="col-xs-3 text-center"> Key Words </th>
+            <th class="col-xs-2 text-center"> Regex </th>
+            <th class="col-xs-1 text-center"> Risk Match Count </th>
+            <th class="col-xs-1 text-center"> Status </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="risk : ${policy.risksInvolved}">
+            <td th:text="${risk.title}"></td>
+            <td th:text="${risk.description}"></td>
+            <td th:text="${risk.keyWords}"></td>
+            <td th:text="${risk.regex}"></td>
+            <td th:text="${risk.riskMatchCount}"></td>
+            <td th:text="${risk.status}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <br><br>
+    <div class="text-center">
+        <a th:href="@{/policy}" class="btn btn-primary btn-lg mb-3"> Back </a>
+    </div>
+    <br>
+</div>
+</body>
+</html>

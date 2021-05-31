@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="ISO-8859-1">
+    <title> Policy - Add Policy </title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+                    aria-controls="navbar">
+                <span class="sr-only">Toggle Navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#" th:href="@{/}"> Policy Module - Add Policy </a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/}"> Home </a></li>
+                <li><a th:href="@{/risk}"> Risk Home </a></li>
+                <li><a th:href="@{/policy}"> Policy Home </a></li>
+                <li><a th:href="@{/activity}"> Activity Logs </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="isAuthenticated()"><a th:href="@{/logout}"> <b> Logout </b> </a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<br><br>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <br>
+            <div th:if="${param.success}">
+                <div class="alert alert-info"> You've Successfully Created A Policy ! </div>
+            </div>
+            <h1> Create A New Policy </h1>
+            <hr>
+            <form th:action="@{/policy/savePolicy}" method="post" th:object="${policy}">
+                <div class="form-group">
+                    <label class="control-label" for="policyName"> Policy Name </label>
+                    <input id="policyName" class="form-control" th:field="*{policyName}"
+                           required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="remedyType"> Remedy Type </label>
+                    <input class="form-control" id="remedyType" th:field="*{remedyType}"
+                           required autofocus="autofocus">
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="remedyTime"> Remedy Time (In Minutes) </label> <input
+                        id="remedyTime" class="form-control" type="number" th:field="*{remedyTime}"
+                        required autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="notifyUser"> Notify User </label> <input
+                        id="notifyUser" class="form-control" type="checkbox" th:field="*{notifyUser}"
+                        autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="notifyAdmin"> Notify Admin </label> <input
+                        id="notifyAdmin" class="form-control" type="checkbox"
+                        th:field="*{notifyAdmin}"  autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="adminEmail"> Admin Email </label>
+                    <input id="adminEmail" class="form-control"
+                           th:field="*{adminEmail}"  autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="adminEmailSubject"> Admin Email Subject </label>
+                    <input id="adminEmailSubject" class="form-control"
+                           th:field="*{adminEmailSubject}"  autofocus="autofocus" />
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="risksInvolved"> Add Risks </label>
+                    <br>
+                    <div class="form-check" th:each="risk : ${allRisks}">
+                        <input multiple="multiple" id="risksInvolved" type="checkbox" class="form-check-input" name="risksInvolved[]"
+                               th:id="${risk.getId()}"
+                               th:value="${risk.getId()}"
+                               th:field="*{risksInvolved}"
+                               th:disabled="${disabledRisks.contains(risk.getId())}"
+                        />
+                        <label class="form-check-label" th:for="${risk.getId()}" th:text="${risk.getTitle()} + ' : ( ' + ${risk.getDescription()} + ' ) '"></label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success"> Add Policy </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
